@@ -1,0 +1,15 @@
+version: "3"
+services:
+  express-container:
+    build:
+      context: .
+      target: development
+    container_name: express-container
+    volumes:
+      - /home/kareem/node-app/src:/app/src:ro
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+    command: npm run start-dev
+  
