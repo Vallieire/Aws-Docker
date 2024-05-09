@@ -20,7 +20,7 @@ redisclient.connect();
 // Define route for setting Redis value
 app.get('/', (req, res) => {
   redisclient.set('products', 'products');
-  res.send('<h1>Hello kemo!</h1>');
+  res.send('<h1>Hello kemo! basha</h1>');
 });
 
 // Define route for getting Redis value
