@@ -2,6 +2,7 @@ version: "3"
 services:
   express-container:
     container_name: express-container
+    image: kareem966/aws-docker-lab1
     volumes:
       - /home/kareem/node-app/src:/app/src:ro
     ports:
