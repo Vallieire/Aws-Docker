@@ -1,5 +1,5 @@
-# Use Node.js 16.x LTS as base image
-FROM node:16 as base
+# Use Node.js LTS as base image
+FROM node:latest as base
 
 # Development stage
 FROM base as development
