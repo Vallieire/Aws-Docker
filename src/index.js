@@ -1,16 +1,14 @@
 const express = require('express');
-//const mongoose = require('mongoose');
 const redis = require('redis');
-const { createClient } = require('redis');
 const { Client } = require('pg');
-
+const mongoose = require('mongoose');
 
 // Initialize app
 const PORT = 4000;
 const app = express();
 
 // Connect to Redis
-const REDIS_HOST = 'redis';
+const REDIS_HOST = 'localhost'; // Changed from 'redis' to 'localhost'
 const REDIS_PORT = '6379';
 const redisclient = redis.createClient({
   url: `redis://${REDIS_HOST}:${REDIS_PORT}`
@@ -31,46 +29,39 @@ app.get('/data', async (req, res) => {
   res.send(`<h1>Hello kemo!</h1><h2>${products}</h2>`);
 });
 
-
 // Start the server
-const port = 4001; // Change to a different port number
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
+// Connect to PostgreSQL
+const DB_USER_POSTGRES = 'kareem'; // Use the default username or correct one
+const DB_PASSWORD_POSTGRES = 'kareem'; // Use the correct password
+const DB_PORT_POSTGRES = '5432';
+const DB_HOST_POSTGRES = 'localhost'; // Changed from 'postgres' to 'localhost'
+const DB_NAME_POSTGRES = 'mydatabase'; // Add the database name here
 
-//  Connect to Postgres
-
-const DB_USER = 'root';
-const DB_PASSWORD = 'example';
-const DB_PORT = '5432';
-const DB_HOST = 'postgres';
-
-// Connection URI
-const URI = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}`;
+// Connection URI for PostgreSQL
+const URI_POSTGRES = `postgresql://${DB_USER_POSTGRES}:${DB_PASSWORD_POSTGRES}@${DB_HOST_POSTGRES}:${DB_PORT_POSTGRES}/${DB_NAME_POSTGRES}`;
 
 // Create a new PostgreSQL client instance
-const clientInstance = new Client({
-  connectionString: URI,
+const clientPostgres = new Client({
+  connectionString: URI_POSTGRES,
 });
 
 // Connect to the PostgreSQL database
-clientInstance.connect()
+clientPostgres.connect()
   .then(() => console.log('Connected to PostgreSQL database'))
   .catch((err) => console.error('Failed to connect to PostgreSQL database:', err));
 
-
-
 // Connect to MongoDB
-// const DB_USER = 'root';
-// const DB_PASSWORD = 'example';
-// const DB_PORT = '27017';
-// const DB_HOST = 'mongo'; 
+const DB_USER_MONGO = 'root';
+const DB_PASSWORD_MONGO = 'example';
+const DB_PORT_MONGO = '27017';
+const DB_HOST_MONGO = 'localhost'; // Changed from 'mongo' to 'localhost'
 
-// const URI = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}`;
-// mongoose.connect(URI)
-//   .then(() => console.log('Connected to MongoDB'))
-//   .catch((err) => console.log(`Failed to connect to MongoDB: ${err}`));
+const URI_MONGO = `mongodb://${DB_USER_MONGO}:${DB_PASSWORD_MONGO}@${DB_HOST_MONGO}:${DB_PORT_MONGO}`;
+mongoose.connect(URI_MONGO)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.log(`Failed to connect to MongoDB: ${err}`));
 
-// Start server
-app.listen(PORT, () => console.log(`App is up and running on port: ${PORT}`));
